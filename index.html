@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Crypto Currency App</title>
+    <style>
+        * { font-size: 2vw; font-family: Calibri; }
+        body { margin: 0; padding: 0; background-color:white ; }
+        h1 { color: #333; }
+        form { border: groove; width: 30%; padding: 30px; background-color: #f4f4f4; text-align: center; }
+        input[type="radio"] { margin: 10px; }
+        input[type="submit"] { background-color: #4CAF50; color: white; padding: 12px 24px; border: none; cursor: pointer; }
+        input[type="submit"]:hover { background-color: #45a049; }
+        h2 { margin-top: 20px; color: #333; }
+    </style>
+</head>
+<body>
+    <center>
+        <h1>Live Crypto Currency App</h1>
+        <form onsubmit="show(event)">
+            <label>
+                <input type="radio" id="USD" name="currency" checked> USD
+            </label>
+            <label>
+                <input type="radio" id="GBP" name="currency"> GBP
+            </label>
+            <label>
+                <input type="radio" id="EUR" name="currency"> EURO
+            </label>
+            <br><br>
+            <input type="submit" value="Show">
+        </form>
+        <h2 id="msg"></h2>
+    </center>
+
+    <script>
+        function show(event) {
+            event.preventDefault(); // Prevent form submission
+
+            let USD = document.getElementById("USD");
+            let GBP = document.getElementById("GBP");
+            let EUR = document.getElementById("EUR");
+            let msg = document.getElementById("msg");
+
+            let url = "https://api.coindesk.com/v1/bpi/currentprice.json";
+
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (USD.checked) {
+                        msg.innerHTML = data.bpi.USD.symbol + data.bpi.USD.rate;
+                    }
+                    if (GBP.checked) {
+                        msg.innerHTML = data.bpi.GBP.symbol + data.bpi.GBP.rate;
+                    }
+                    if (EUR.checked) {
+                        msg.innerHTML = data.bpi.EUR.symbol + data.bpi.EUR.rate;
+                    }
+                })
+                .catch(err => alert("Issue: " + err));
+        }
+    </script>
+</body>
+</html>
